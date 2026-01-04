@@ -43,71 +43,75 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(54.6% 0.245 262.881);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Voltaris Light Theme Tokens */
+  --background: #f5f7fa; /* App Background */
+  --foreground: #0f172a; /* Text Main */
+  --card: #ffffff; /* Surface */
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #00325b; /* Primary Navy */
+  --primary-foreground: #ffffff;
+  --secondary: #19527c; /* Secondary Navy */
+  --secondary-foreground: #ffffff;
+  --muted: #f9fafb; /* Surface Alt */
+  --muted-foreground: #6b7280; /* Text Muted */
+  --accent: #f8b400; /* Solar Accent Yellow */
+  --accent-foreground: #0f172a;
+  --destructive: #f97316; /* Warning / Destructive */
+  --border: #e2e8f0; /* Border Muted */
+  --input: #ffffff;
+  --ring: #f8b400; /* Focus ring (Solar Yellow) */
+  /* Chart palette (kept but tuned) */
+  --chart-1: #19527c;
+  --chart-2: #16a34a;
+  --chart-3: #f97316;
+  --chart-4: #f8b400;
+  --chart-5: #00325b;
+  /* Sidebar tokens */
+  --sidebar: #00325b; /* Sidebar background */
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #19527c;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f8b400;
+  --sidebar-accent-foreground: #0f172a;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #f8b400;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Voltaris Dark Theme Tokens */
+  --background: #020617; /* App Background Dark */
+  --foreground: #e5e7eb; /* Text Main Dark */
+  --card: #0b1120; /* Surface Dark */
+  --card-foreground: #e5e7eb;
+  --popover: #0b1120;
+  --popover-foreground: #e5e7eb;
+  --primary: #19527c; /* Primary in dark */
+  --primary-foreground: #ffffff;
+  --secondary: #19527c;
+  --secondary-foreground: #ffffff;
+  --muted: #1e293b; /* Surface Alt Dark */
+  --muted-foreground: #a0aec0;
+  --accent: #f8b400;
+  --accent-foreground: #020617;
+  --destructive: #f97316;
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #f8b400;
+  --chart-1: #19527c;
+  --chart-2: #16a34a;
+  --chart-3: #f97316;
+  --chart-4: #f8b400;
+  --chart-5: #00325b;
+  --sidebar: #0b1120;
+  --sidebar-foreground: #e5e7eb;
+  --sidebar-primary: #19527c;
+  --sidebar-primary-foreground: #e5e7eb;
+  --sidebar-accent: #f8b400;
+  --sidebar-accent-foreground: #020617;
+  --sidebar-border: #1e293b;
+  --sidebar-ring: #f8b400;
 }
 
 @layer base {
@@ -117,4 +121,33 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Small helper utilities to map design tokens to class names used in components */
+.bg-background {
+  background: var(--background) !important;
+}
+.bg-card {
+  background: var(--card) !important;
+}
+.bg-primary {
+  background: var(--primary) !important;
+}
+.bg-accent {
+  background: var(--accent) !important;
+}
+.text-foreground {
+  color: var(--foreground) !important;
+}
+.text-muted-foreground {
+  color: var(--muted-foreground) !important;
+}
+.text-primary-foreground {
+  color: var(--primary-foreground) !important;
+}
+.border-muted {
+  border-color: var(--border) !important;
+}
+.ring-accent {
+  outline-color: var(--ring) !important;
 }

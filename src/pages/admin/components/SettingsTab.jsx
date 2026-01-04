@@ -7,7 +7,7 @@ import { Settings, Bell, Lock, Database } from "lucide-react";
 
 export function SettingsTab() {
   const [settings, setSettings] = useState({
-    appName: "Aelora Admin",
+    appName: "Voltaris Console",
     maintenanceMode: false,
     emailNotifications: true,
     logRetention: "30",

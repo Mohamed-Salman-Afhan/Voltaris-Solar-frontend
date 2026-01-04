@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import voltarisLogo from "@/assets/Voltaris-Solar-White-logo.png";
 
 // Menu items for admin navigation.
 const items = [
@@ -46,11 +47,23 @@ export function AdminSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-3xl font-bold text-foreground">
-            <Link to="/">Aelora</Link>
+          <SidebarGroupLabel className="mt-4 text-3xl font-bold text-foreground">
+                     <Link to="/" className="flex items-center gap-3">
+                       <img
+                         src={voltarisLogo}
+                         alt="Voltaris"
+                         className="h-16 w-16 object-contain"
+                       />
+              <div className="mt-3 flex flex-col">
+                <span className="text-lg text-white font-semibold">Admin Panel</span>
+                <span className="text-xs text-muted-foreground">
+                  Monitoring the next generation of solar
+                </span>
+              </div>
+            </Link>
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="mt-4">
+            <SidebarMenu className="mt-8">
               {items.map((item) => (
                 <AdminSideBarTab key={item.url} item={item} />
               ))}

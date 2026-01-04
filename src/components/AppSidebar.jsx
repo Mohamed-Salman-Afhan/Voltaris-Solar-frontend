@@ -13,6 +13,21 @@ import {
 import voltarisLogo from "@/assets/Voltaris-Solar-White-logo.png";
 import { useLocation } from "react-router";
 import { cn } from "@/lib/utils";
+import { UserButton, useUser } from "@clerk/clerk-react";
+import { SidebarFooter } from "@/components/ui/sidebar";
+
+const UserText = () => {
+  const { user } = useUser();
+  if (!user) return null;
+  return (
+    <div className="flex flex-col items-start text-sm">
+      <span className="font-semibold text-foreground">{user.fullName}</span>
+      <span className="text-xs text-muted-foreground truncate max-w-[150px]">
+        {user.primaryEmailAddress?.emailAddress}
+      </span>
+    </div>
+  );
+};
 
 // Menu items.
 const items = [
@@ -62,7 +77,9 @@ export function AppSidebar() {
                 className="h-16 w-16 object-contain"
               />
               <div className="mt-3 flex flex-col">
-                <span className="text-lg text-white font-semibold">Voltaris Solar</span>
+                <span className="text-lg text-white font-semibold">
+                  Voltaris Solar
+                </span>
                 <span className="text-xs text-muted-foreground">
                   Monitoring the next generation of solar
                 </span>
@@ -78,6 +95,31 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter className="p-4 border-t border-sidebar-border/50">
+        <div className="flex items-center gap-3 p-2 rounded-lg border border-sidebar-border bg-sidebar-accent/50 hover:bg-sidebar-accent transition-colors">
+          <UserButton
+            afterSignOutUrl="/"
+            appearance={{
+              elements: {
+                avatarBox: "h-9 w-9",
+              },
+            }}
+          />
+          <div className="flex flex-col min-w-0">
+            <span className="text-sm font-medium truncate text-sidebar-foreground">
+              {/* We need to fetch user data, but we can't easily do hooks inside this return if we don't have the hook called. 
+                       Lets just wrap this content in a component or use UserButton's internal capability if we want just the button.
+                       But the screenshot implies text. 
+                       Let's rely on Clerk's UserButton to handle the menu, but we might just want to show the button itself. 
+                       Actually, usually UserButton is just the avatar. 
+                       The screenshot shows "John Doe" text. 
+                       Let's use the useUser hook at the top level.
+                    */}
+              <UserText />
+            </span>
+          </div>
+        </div>
+      </SidebarFooter>
     </Sidebar>
   );
 }

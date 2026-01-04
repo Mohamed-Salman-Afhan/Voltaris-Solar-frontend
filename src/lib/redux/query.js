@@ -18,6 +18,7 @@ export const api = createApi({
       return headers;
     },
   }),
+  tagTypes: ["Anomalies"],
   endpoints: (build) => ({
     getEnergyGenerationRecordsBySolarUnit: build.query({
       query: ({ id, groupBy, limit }) =>
@@ -56,6 +57,30 @@ export const api = createApi({
       query: ({ solarUnitId, days }) =>
         `/capacity-factor/${solarUnitId}?days=${days}`,
     }),
+    getAnomalies: build.query({
+      query: ({ unitId, status, severity }) => {
+        const params = new URLSearchParams();
+        if (status) params.append("status", status);
+        if (severity) params.append("severity", severity);
+        return `/anomalies/unit/${unitId}?${params.toString()}`;
+      },
+      providesTags: ["Anomalies"],
+    }),
+    updateAnomaly: build.mutation({
+      query: ({ anomalyId, status, resolutionNotes }) => ({
+        url: `/anomalies/${anomalyId}`,
+        method: "PATCH",
+        body: { status, resolutionNotes },
+      }),
+      invalidatesTags: ["Anomalies"],
+    }),
+    getAdminAnomalies: build.query({
+      query: (params) => {
+        const qs = new URLSearchParams(params).toString();
+        return `/anomalies/admin?${qs}`;
+      },
+      providesTags: ["Anomalies"],
+    }),
   }),
 });
 
@@ -71,4 +96,7 @@ export const {
   useEditSolarUnitMutation,
   useGetWeatherQuery,
   useGetCapacityFactorQuery,
+  useGetAnomaliesQuery,
+  useUpdateAnomalyMutation,
+  useGetAdminAnomaliesQuery,
 } = api;

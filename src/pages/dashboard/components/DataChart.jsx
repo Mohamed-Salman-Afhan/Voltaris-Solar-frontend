@@ -47,68 +47,115 @@ const DataChart = ({ solarUnitId }) => {
 
   const chartConfig = {
     energy: {
-      label: "Energy (kWh)",
-      color: "oklch(54.6% 0.245 262.881)",
+      label: "Production",
+      color: "hsl(var(--primary))",
     },
   };
 
   const title = "Energy Production Chart";
 
   return (
-    <Card className="rounded-md p-4">
-      <div className="flex justify-between items-center gap-2">
-        <h2 className="text-xl font-medium text-foreground">{title}</h2>
+    <Card className="rounded-xl shadow-lg border border-[var(--border)] bg-[var(--card)]/50 backdrop-blur-sm dark:bg-[var(--card)]/30">
+      <div className="flex justify-between items-center gap-2 p-2">
+        <div>
+          <h2 className="ml-2 text-xl font-bold text-[var(--primary)] tracking-tight">
+            {title}
+          </h2>
+          <p className="ml-2 text-sm text-[var(--muted-foreground)]">
+            Historical generation overview
+          </p>
+        </div>
         <div>
           <Select value={selectedRange} onValueChange={handleRangeChange}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue
-                className="text-foreground"
-                placeholder="Select Range"
-              />
+            <SelectTrigger className="w-[140px] h-9 border-[var(--primary)]/20 bg-[var(--card)]/50 dark:bg-[var(--card)]/30">
+              <SelectValue placeholder="Select Range" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="7">7 Days</SelectItem>
-              <SelectItem value="30">30 Days</SelectItem>
+              <SelectItem value="7">Last 7 Days</SelectItem>
+              <SelectItem value="30">Last 30 Days</SelectItem>
             </SelectContent>
           </Select>
         </div>
       </div>
-      <div>
-        <ChartContainer config={chartConfig}>
+
+      <div className="mt-4">
+        <ChartContainer config={chartConfig} className="h-[310px] w-full">
           <AreaChart
             accessibilityLayer
             data={lastSelectedRangeDaysEnergyProduction}
             margin={{
-              left: 40,
-              right: 20,
-              top: 20,
-              bottom: 20,
+              left: 30, // breathing room for Y-axis
+              right: 10,
+              top: 10,
+              bottom: 0,
             }}
           >
-            <CartesianGrid vertical={false} />
+            <defs>
+              <linearGradient id="fillEnergyDark" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="0%"
+                  stopColor="var(--secondary)"
+                  stopOpacity={0.85}
+                />
+                <stop
+                  offset="50%"
+                  stopColor="var(--primary)"
+                  stopOpacity={0.6}
+                />
+                <stop
+                  offset="100%"
+                  stopColor="var(--foreground)"
+                  stopOpacity={0.25}
+                />
+              </linearGradient>
+            </defs>
+
+            <CartesianGrid
+              vertical={false}
+              strokeDasharray="3 3"
+              stroke="var(--border)"
+              opacity={0.5}
+            />
+
             <XAxis
               dataKey="date"
-              tickLine={true}
-              axisLine={true}
-              tickMargin={8}
-              tick={false}
-              label={{ value: "Date", position: "insideBottom", offset: -5 }}
+              tickLine={false}
+              axisLine={false}
+              tickMargin={10}
+              tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
             />
+
             <YAxis
-              tickLine={true}
-              axisLine={true}
-              tickMargin={8}
-              tickCount={10}
-              label={{ value: "kWh", angle: -90, position: "insideLeft" }}
+              tickLine={false}
+              axisLine={false}
+              tickMargin={10}
+              tickCount={5}
+              tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+              unit=" kWh"
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+
+            <ChartTooltip
+              cursor={{
+                stroke: "var(--accent)",
+                strokeWidth: 1,
+                strokeDasharray: "3 3",
+              }}
+              content={
+                <ChartTooltipContent
+                  className="bg-[var(--card)]/90 backdrop-blur border-[var(--primary)]/10 shadow-xl rounded-xl p-3"
+                  labelClassName="font-bold text-[var(--foreground)] mb-1"
+                />
+              }
+            />
+
             <Area
               dataKey="energy"
-              type="natural"
-              fill="var(--color-energy)"
-              fillOpacity={0.4}
-              stroke="var(--color-energy)"
-              stackId="a"
+              type="monotone"
+              fill="url(#fillEnergyDark)" // use dark gradient theme
+              fillOpacity={1}
+              stroke="var(--accent)" // accent line for contrast
+              strokeWidth={3}
+              activeDot={{ r: 6, strokeWidth: 0, fill: "var(--accent)" }}
             />
           </AreaChart>
         </ChartContainer>

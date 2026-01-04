@@ -5,10 +5,10 @@ import voltarisLogo from "@/assets/logo.png";
 
 const Navigation = () => {
   return (
-    <nav className={"px-12 py-6 flex justify-between items-center"}>
+    <nav className={"px-8 flex justify-between items-center"}>
       <Link to="/" className={"flex items-center gap-3"}>
-        <img src={voltarisLogo} alt="Voltaris Solar" className="h-10 w-10 object-contain" />
-        <span className="font-[Inter] text-xl font-semibold">Voltaris Solar</span>
+        <img src={voltarisLogo} alt="Voltaris Solar" className="h-24 w-24 object-contain" />
+        <span className="font-[Inter] text-xl text-primary font-bold">Voltaris Solar</span>
       </Link>
 
       <div className={"flex items-center gap-12"}>

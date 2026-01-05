@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router";
+import { Toaster } from "sonner";
 
 import HomePage from "./pages/home/home.page.jsx";
 import DashboardPage from "./pages/dashboard/dashboard.page.jsx";
@@ -22,6 +23,9 @@ import SolarUnitEditPage from "./pages/admin/solar-unit-edit.page.jsx";
 import SolarUnitCreatePage from "./pages/admin/solar-unit-create.page.jsx";
 import AnomaliesPage from "./pages/anomalies/anomalies.page.jsx";
 import AdminAnomaliesPage from "./pages/admin/anomalies-admin.page.jsx";
+import InvoicesPage from "./pages/invoices/invoices.page.jsx";
+import PaymentPage from "./pages/invoices/payment.page.jsx";
+import PaymentCompletePage from "./pages/invoices/complete.page.jsx";
 
 import { store } from "@/lib/redux/store.js";
 import { Provider } from "react-redux";
@@ -39,6 +43,7 @@ createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <BrowserRouter>
         <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+          <Toaster richColors position="top-right" />
           <Routes>
             <Route element={<RootLayout />}>
               <Route path="/sign-in" element={<SignInPage />} />
@@ -52,6 +57,18 @@ createRoot(document.getElementById("root")).render(
                   <Route
                     path="/dashboard/anomalies"
                     element={<AnomaliesPage />}
+                  />
+                  <Route
+                    path="/dashboard/invoices"
+                    element={<InvoicesPage />}
+                  />
+                  <Route
+                    path="/dashboard/invoices/:id/pay"
+                    element={<PaymentPage />}
+                  />
+                  <Route
+                    path="/dashboard/invoices/complete"
+                    element={<PaymentCompletePage />}
                   />
                 </Route>
                 <Route element={<AuthorizedLayout />}>

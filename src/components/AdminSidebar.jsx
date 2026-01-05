@@ -20,7 +20,7 @@ const UserText = () => {
   return (
     <div className="flex flex-col items-start text-sm">
       <span className="font-semibold text-foreground">{user.fullName}</span>
-      <span className="text-xs text-muted-foreground truncate max-w-[150px]">
+          <span className="text-xs text-foreground truncate max-w-[150px]">
         {user.primaryEmailAddress?.emailAddress}
       </span>
     </div>

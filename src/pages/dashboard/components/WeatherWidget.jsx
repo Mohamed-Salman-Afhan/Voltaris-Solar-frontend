@@ -97,6 +97,8 @@ const WeatherWidget = ({ solarUnitId }) => {
     shortwave_radiation,
     impact_level,
     timestamp,
+    city,
+    country,
   } = response.data;
 
   return (
@@ -149,7 +151,10 @@ const WeatherWidget = ({ solarUnitId }) => {
             unit="W/m²"
           />
         </div>
-        <div className="flex justify-end mt-2">
+        <div className="flex justify-between mt-2 items-center px-1">
+          <span className="text-[10px] text-white/60 font-medium">
+            {[city, country].filter(Boolean).join(", ")}
+          </span>
           <span className="text-[10px] text-white/60">
             Updated: {new Date(timestamp).toLocaleTimeString()}
           </span>

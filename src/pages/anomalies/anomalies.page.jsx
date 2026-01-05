@@ -14,6 +14,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle, CheckCircle, ShieldAlert } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useUser } from "@clerk/clerk-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const ProductionCardsContainer = ({ solarUnitId, anomalies }) => {
   const [tab, setTab] = useState("ALL"); // ALL | ANOMALY
@@ -87,10 +94,29 @@ const AnomaliesPage = () => {
   const { user } = useUser();
   const [filter, setFilter] = useState("NEW"); // 'NEW' or 'RESOLVED' or 'ALL'
 
-  const { data: solarUnit, isLoading: isUnitLoading } =
+  const { data: solarUnitResponse, isLoading: isUnitLoading } =
     useGetSolarUnitForUserQuery();
 
-  const unitId = solarUnit?._id;
+  // Handle array or single object response
+  const solarUnits = Array.isArray(solarUnitResponse)
+    ? solarUnitResponse
+    : solarUnitResponse
+    ? [solarUnitResponse]
+    : [];
+
+  // State for selected unit ID
+  const [selectedUnitId, setSelectedUnitId] = useState("");
+
+  // Set default selected unit when data loads
+  React.useEffect(() => {
+    if (solarUnits.length > 0 && !selectedUnitId) {
+      setSelectedUnitId(solarUnits[0]._id);
+    }
+  }, [solarUnits, selectedUnitId]);
+
+  const selectedUnit =
+    solarUnits.find((u) => u._id === selectedUnitId) || solarUnits[0];
+  const unitId = selectedUnit?._id;
 
   // Conditionally fetch only when unitId is available
   const { data: anomaliesResponse, isLoading: isAnomaliesLoading } =
@@ -128,7 +154,7 @@ const AnomaliesPage = () => {
     );
   }
 
-  if (!unitId)
+  if (solarUnits.length === 0)
     return <div className="p-8">No solar unit found for this user.</div>;
 
   const criticalCount = anomalies.filter(
@@ -144,30 +170,53 @@ const AnomaliesPage = () => {
             System Health & Anomalies
           </h1>
           <p className="text-muted-foreground mt-1">
-            Diagnostic monitoring for {user?.firstName}'s Unit
+            Diagnostic monitoring for {user?.firstName}'s Unit{" "}
+            {selectedUnit && `(${selectedUnit.serialNumber})`}
           </p>
         </div>
-        <div className="flex space-x-2 bg-muted p-1 rounded-lg">
-          <button
-            onClick={() => setFilter("NEW")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-              filter === "NEW"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            Active Issues
-          </button>
-          <button
-            onClick={() => setFilter("RESOLVED")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-              filter === "RESOLVED"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            Resolved History
-          </button>
+
+        <div className="flex items-center gap-4">
+          {/* Unit Selector */}
+          <div className="w-[200px]">
+            <Select
+              value={selectedUnitId}
+              onValueChange={(value) => setSelectedUnitId(value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select Solar Unit" />
+              </SelectTrigger>
+              <SelectContent>
+                {solarUnits.map((unit) => (
+                  <SelectItem key={unit._id} value={unit._id}>
+                    {unit.serialNumber} ({unit.status})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex space-x-2 bg-muted p-1 rounded-lg">
+            <button
+              onClick={() => setFilter("NEW")}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                filter === "NEW"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Active Issues
+            </button>
+            <button
+              onClick={() => setFilter("RESOLVED")}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                filter === "RESOLVED"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Resolved History
+            </button>
+          </div>
         </div>
       </div>
 
@@ -222,8 +271,7 @@ const AnomaliesPage = () => {
         </Card>
       </div>
 
-
- {/* Energy Production Cards - Last 7 Days */}
+      {/* Energy Production Cards - Last 7 Days */}
       <div className="mt-8">
         <h2 className="text-xl font-semibold mb-4 text-foreground">
           Last 7 Days Energy Consumption

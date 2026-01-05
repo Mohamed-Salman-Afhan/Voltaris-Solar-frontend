@@ -11,7 +11,12 @@ export function SolarUnitsTab() {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
-  const { data: solarUnits, isLoading: isLoadingSolarUnits, isError: isErrorSolarUnits, error: errorSolarUnits } = useGetSolarUnitsQuery();
+  const {
+    data: solarUnits,
+    isLoading: isLoadingSolarUnits,
+    isError: isErrorSolarUnits,
+    error: errorSolarUnits,
+  } = useGetSolarUnitsQuery();
 
   if (isLoadingSolarUnits) {
     return <div>Loading...</div>;
@@ -23,10 +28,12 @@ export function SolarUnitsTab() {
 
   console.log(solarUnits);
 
-
-  const filteredUnits = searchTerm !== "" ? solarUnits.filter(
-    (unit) =>
-      unit.serialNumber.toLowerCase().includes(searchTerm.toLowerCase())) : solarUnits;
+  const filteredUnits =
+    searchTerm !== ""
+      ? solarUnits.filter((unit) =>
+          unit.serialNumber.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      : solarUnits;
 
   return (
     <div className="space-y-6">
@@ -46,19 +53,27 @@ export function SolarUnitsTab() {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {filteredUnits.map((unit) => (
-          <Card key={unit._id} className="p-6 hover:shadow-lg transition-shadow">
+          <Card
+            key={unit._id}
+            className="p-6 hover:shadow-lg transition-shadow"
+          >
             <div className="flex items-start justify-between">
               <div className="space-y-2 flex-1">
                 <div className="flex items-center gap-2">
                   <Zap className="w-5 h-5 text-yellow-500" />
-                  <h3 className="font-semibold text-foreground">{unit.serialNumber}</h3>
+                  <h3 className="font-semibold text-foreground">
+                    {unit.serialNumber}
+                  </h3>
                 </div>
               </div>
               <div
-                className={`px-3 py-1 rounded-full text-xs font-medium ${unit.status === "Active"
-                  ? "bg-green-100 text-green-800"
-                  : "bg-gray-100 text-gray-800"
-                  }`}
+                className={`px-3 py-1 rounded-full text-xs font-medium ${
+                  unit.status === "ACTIVE"
+                    ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
+                    : unit.status === "MAINTENANCE"
+                    ? "bg-amber-100 text-amber-800 border border-amber-200"
+                    : "bg-slate-100 text-slate-800 border border-slate-200"
+                }`}
               >
                 {unit.status}
               </div>
@@ -76,7 +91,9 @@ export function SolarUnitsTab() {
                   variant="outline"
                   size="sm"
                   className="flex-1"
-                  onClick={() => navigate(`/admin/solar-units/${unit._id}/edit`)}
+                  onClick={() =>
+                    navigate(`/admin/solar-units/${unit._id}/edit`)
+                  }
                 >
                   Edit
                 </Button>

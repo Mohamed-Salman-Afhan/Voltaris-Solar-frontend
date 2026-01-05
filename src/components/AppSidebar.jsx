@@ -1,4 +1,9 @@
-import { ChartLine, LayoutDashboard, TriangleAlert } from "lucide-react";
+import {
+  ChartLine,
+  LayoutDashboard,
+  TriangleAlert,
+  Receipt,
+} from "lucide-react";
 import { Link } from "react-router";
 import {
   Sidebar,
@@ -22,7 +27,7 @@ const UserText = () => {
   return (
     <div className="flex flex-col items-start text-sm">
       <span className="font-semibold text-foreground">{user.fullName}</span>
-      <span className="text-xs text-muted-foreground truncate max-w-[150px]">
+      <span className="text-xs text-foreground truncate max-w-[150px]">
         {user.primaryEmailAddress?.emailAddress}
       </span>
     </div>
@@ -45,6 +50,11 @@ const items = [
     title: "Analytics",
     url: "/dashboard/analytics",
     icon: <ChartLine className="w-8 h-8" size={32} />,
+  },
+  {
+    title: "Invoices",
+    url: "/dashboard/invoices",
+    icon: <Receipt className="w-8 h-8" size={32} />,
   },
 ];
 

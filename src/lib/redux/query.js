@@ -18,7 +18,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Anomalies"],
+  tagTypes: ["Anomalies", "SolarUnits", "Invoices"],
   endpoints: (build) => ({
     getEnergyGenerationRecordsBySolarUnit: build.query({
       query: ({ id, groupBy, limit }) =>
@@ -29,9 +29,11 @@ export const api = createApi({
     }),
     getSolarUnits: build.query({
       query: () => `/solar-units`,
+      providesTags: ["SolarUnits"],
     }),
     getSolarUnitById: build.query({
       query: (id) => `/solar-units/${id}`,
+      providesTags: (result, error, id) => [{ type: "SolarUnits", id }],
     }),
     createSolarUnit: build.mutation({
       query: (data) => ({
@@ -39,6 +41,7 @@ export const api = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["SolarUnits"],
     }),
     editSolarUnit: build.mutation({
       query: ({ id, data }) => ({
@@ -46,6 +49,17 @@ export const api = createApi({
         method: "PUT",
         body: data,
       }),
+      invalidatesTags: (result, error, { id }) => [
+        "SolarUnits",
+        { type: "SolarUnits", id },
+      ],
+    }),
+    deleteSolarUnit: build.mutation({
+      query: (id) => ({
+        url: `/solar-units/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["SolarUnits"],
     }),
     getAllUsers: build.query({
       query: () => `/users`,
@@ -81,6 +95,24 @@ export const api = createApi({
       },
       providesTags: ["Anomalies"],
     }),
+    getInvoices: build.query({
+      query: () => "/invoices",
+      providesTags: ["Invoices"],
+    }),
+    getInvoiceById: build.query({
+      query: (id) => `/invoices/${id}`,
+      providesTags: (result, error, id) => [{ type: "Invoices", id }],
+    }),
+    createPaymentSession: build.mutation({
+      query: (data) => ({
+        url: "/payments/create-checkout-session",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getSessionStatus: build.query({
+      query: (sessionId) => `/payments/session-status?session_id=${sessionId}`,
+    }),
   }),
 });
 
@@ -99,4 +131,9 @@ export const {
   useGetAnomaliesQuery,
   useUpdateAnomalyMutation,
   useGetAdminAnomaliesQuery,
+  useDeleteSolarUnitMutation,
+  useGetInvoicesQuery,
+  useGetInvoiceByIdQuery,
+  useCreatePaymentSessionMutation,
+  useGetSessionStatusQuery,
 } = api;

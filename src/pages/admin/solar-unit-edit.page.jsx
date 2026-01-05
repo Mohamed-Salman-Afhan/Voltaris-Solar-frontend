@@ -6,8 +6,13 @@ export default function SolarUnitEditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { data: solarUnit, isLoading: isLoadingSolarUnit, isError: isErrorSolarUnit, error: errorSolarUnit } = useGetSolarUnitByIdQuery(id);
-  
+  const {
+    data: solarUnit,
+    isLoading: isLoadingSolarUnit,
+    isError: isErrorSolarUnit,
+    error: errorSolarUnit,
+  } = useGetSolarUnitByIdQuery(id);
+
   console.log(solarUnit);
 
   if (isLoadingSolarUnit) {
@@ -18,23 +23,19 @@ export default function SolarUnitEditPage() {
     return <div>Error: {errorSolarUnit.message}</div>;
   }
 
-  const handleEdit = () => {
-    // TODO: Navigate to edit page
-    console.log("Edit solar unit:", solarUnit._id);
-  };
-
-  const handleDelete = () => {
-    // TODO: Implement delete with confirmation
-    console.log("Delete solar unit:", solarUnit._id);
-  };
-
   return (
-    <main className="mt-4">
-      <h1 className="text-4xl font-bold text-foreground">Edit Solar Unit</h1>
-      <h2 className="mt-4 text-2xl font-bold text-foreground">{solarUnit.serialNumber}</h2>
-      <p className="text-gray-600 mt-2">Edit the details of the solar unit</p>
-      
-      <div className="mt-8">
+    <main className="mt-6">
+      {/* Primary Heading */}
+      <h1 className="text-4xl font-extrabold tracking-tight text-foreground">
+        Edit Solar Unit
+      </h1>
+
+      {/* Subheading with Serial */}
+      <h2 className="mt-3 text-xl font-semibold text-muted-foreground">
+        Unit ID: {solarUnit.serialNumber}
+      </h2>
+
+      <div className="mt-10">
         <EditSolarUnitForm solarUnit={solarUnit} />
       </div>
     </main>

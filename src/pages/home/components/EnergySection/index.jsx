@@ -1,10 +1,17 @@
-import React, { useMemo } from 'react';
-import imgWindTurbine from './wind-turbine-large.png';
-import imgSolarConstruction from './solar-construction.png';
-import { useGetSolarUnitForUserQuery, useGetEnergyGenerationRecordsBySolarUnitQuery } from "@/lib/redux/query";
+import React, { useMemo } from "react";
+import imgWindTurbine from "./wind-turbine-large.png";
+import imgSolarConstruction from "./solar-construction.png";
+import {
+  useGetSolarUnitForUserQuery,
+  useGetEnergyGenerationRecordsBySolarUnitQuery,
+} from "@/lib/redux/query";
 
 const EnergySection = () => {
-  const { data: solarUnit } = useGetSolarUnitForUserQuery();
+  const { data: solarUnitResponse } = useGetSolarUnitForUserQuery();
+  // Handle array vs single object, default to first unit
+  const solarUnit = Array.isArray(solarUnitResponse)
+    ? solarUnitResponse[0]
+    : solarUnitResponse;
   const solarUnitId = solarUnit?._id;
 
   // Fetch records for the last 60 days to ensure we cover the current month
@@ -19,7 +26,7 @@ const EnergySection = () => {
 
   const currentMonthEnergy = useMemo(() => {
     if (!energyData) return 0;
-    
+
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
@@ -27,7 +34,10 @@ const EnergySection = () => {
     return energyData.reduce((acc, curr) => {
       // usage in DataChart implies curr._id.date is the date field
       const date = new Date(curr._id.date);
-      if (date.getMonth() === currentMonth && date.getFullYear() === currentYear) {
+      if (
+        date.getMonth() === currentMonth &&
+        date.getFullYear() === currentYear
+      ) {
         return acc + (curr.totalEnergy || 0);
       }
       return acc;
@@ -54,10 +64,14 @@ const EnergySection = () => {
               Generation
             </h2>
             <p className="max-w-prose text-lg text-muted-foreground">
-              This month, your solar panels generated <span className="font-semibold text-primary">{currentMonthEnergy > 0 ? currentMonthEnergy.toFixed(2) : "0"} kWh</span> of clean energy,
-              helping you save on electricity bills and reduce your carbon
-              footprint. Track your energy production trends and see how
-              much power you contribute back to the grid.
+              This month, your solar panels generated{" "}
+              <span className="font-semibold text-primary">
+                {currentMonthEnergy > 0 ? currentMonthEnergy.toFixed(2) : "0"}{" "}
+                kWh
+              </span>{" "}
+              of clean energy, helping you save on electricity bills and reduce
+              your carbon footprint. Track your energy production trends and see
+              how much power you contribute back to the grid.
             </p>
           </div>
 

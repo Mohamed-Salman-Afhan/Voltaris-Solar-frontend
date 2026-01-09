@@ -22,8 +22,10 @@ import AdminPage from "./pages/admin/admin.page.jsx";
 import SolarUnitEditPage from "./pages/admin/solar-unit-edit.page.jsx";
 import SolarUnitCreatePage from "./pages/admin/solar-unit-create.page.jsx";
 import AnomaliesPage from "./pages/anomalies/anomalies.page.jsx";
+import AnalyticsPage from "./pages/analytics/AnalyticsPage.jsx";
 import AdminAnomaliesPage from "./pages/admin/anomalies-admin.page.jsx";
 import InvoicesPage from "./pages/invoices/invoices.page.jsx";
+import AdminInvoicesPage from "./pages/admin/invoices/AdminInvoicesPage.jsx";
 import PaymentPage from "./pages/invoices/payment.page.jsx";
 import PaymentCompletePage from "./pages/invoices/complete.page.jsx";
 
@@ -63,6 +65,10 @@ createRoot(document.getElementById("root")).render(
                     element={<InvoicesPage />}
                   />
                   <Route
+                    path="/dashboard/analytics"
+                    element={<AnalyticsPage />}
+                  />
+                  <Route
                     path="/dashboard/invoices/:id/pay"
                     element={<PaymentPage />}
                   />
@@ -94,6 +100,10 @@ createRoot(document.getElementById("root")).render(
                     <Route
                       path="/admin/anomalies"
                       element={<AdminAnomaliesPage />}
+                    />
+                    <Route
+                      path="/admin/invoices"
+                      element={<AdminInvoicesPage />}
                     />
                   </Route>
                 </Route>

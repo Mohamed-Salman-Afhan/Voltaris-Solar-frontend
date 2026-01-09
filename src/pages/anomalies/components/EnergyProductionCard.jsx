@@ -51,7 +51,7 @@ const EnergyProductionCard = ({
             hasAnomaly ? "text-[var(--destructive)]" : "text-[var(--primary)]"
           }`}
         >
-          {production}
+          {Math.round(production)}
         </span>
         <span className="text-sm font-medium text-[var(--muted-foreground)]">
           kWh

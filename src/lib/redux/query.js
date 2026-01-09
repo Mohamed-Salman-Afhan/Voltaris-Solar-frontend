@@ -113,6 +113,16 @@ export const api = createApi({
     getSessionStatus: build.query({
       query: (sessionId) => `/payments/session-status?session_id=${sessionId}`,
     }),
+    getAnalyticsDashboard: build.query({
+      query: ({ solarUnitId, days }) =>
+        `/analytics/${solarUnitId}?days=${days || 30}`,
+    }),
+    getAdminInvoices: build.query({
+      query: (params) => {
+        const queryString = new URLSearchParams(params).toString();
+        return `/admin/invoices?${queryString}`;
+      },
+    }),
   }),
 });
 
@@ -136,4 +146,6 @@ export const {
   useGetInvoiceByIdQuery,
   useCreatePaymentSessionMutation,
   useGetSessionStatusQuery,
+  useGetAnalyticsDashboardQuery,
+  useGetAdminInvoicesQuery,
 } = api;

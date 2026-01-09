@@ -86,8 +86,14 @@ export function EditSolarUnitForm({ solarUnit }) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       serialNumber: solarUnit.serialNumber,
+      serialNumber: solarUnit.serialNumber,
       installationDate: solarUnit.installationDate
-        ? new Date(solarUnit.installationDate).toISOString().slice(0, 16)
+        ? new Date(
+            new Date(solarUnit.installationDate).getTime() -
+              new Date().getTimezoneOffset() * 60000
+          )
+            .toISOString()
+            .slice(0, 16)
         : "",
       capacity: solarUnit.capacity,
       status: solarUnit.status,
@@ -223,6 +229,7 @@ export function EditSolarUnitForm({ solarUnit }) {
                         <Input
                           className="h-11"
                           type="datetime-local"
+                          max={new Date().toISOString().slice(0, 16)}
                           {...field}
                         />
                       </FormControl>

@@ -1,4 +1,4 @@
-import { Settings, Zap, TriangleAlert } from "lucide-react";
+import { Settings, Zap, TriangleAlert, DollarSign } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import {
   Sidebar,
@@ -20,7 +20,7 @@ const UserText = () => {
   return (
     <div className="flex flex-col items-start text-sm">
       <span className="font-semibold text-foreground">{user.fullName}</span>
-          <span className="text-xs text-foreground truncate max-w-[150px]">
+      <span className="text-xs text-foreground truncate max-w-[150px]">
         {user.primaryEmailAddress?.emailAddress}
       </span>
     </div>
@@ -43,6 +43,11 @@ const items = [
     title: "Anomalies",
     url: "/admin/anomalies",
     icon: <TriangleAlert className="w-8 h-8" size={32} />,
+  },
+  {
+    title: "Invoices",
+    url: "/admin/invoices",
+    icon: <DollarSign className="w-8 h-8" size={32} />,
   },
 ];
 

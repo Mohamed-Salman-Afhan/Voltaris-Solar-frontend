@@ -130,7 +130,15 @@ export function CreateSolarUnitForm() {
   }
 
   return (
-    <Card className="w-full max-w-5xl mx-auto shadow-lg border-muted/40">
+    <Card className="w-full max-w-5xl mx-auto shadow-lg border-muted/40 relative">
+      {isCreatingSolarUnit && (
+        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center z-50 rounded-lg">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent mb-4"></div>
+          <p className="text-xl font-semibold text-primary animate-pulse">
+            Creating Solar Unit...
+          </p>
+        </div>
+      )}
       <CardHeader className="space-y-1 pb-6 border-b border-border/50 bg-slate-50/30">
         <CardTitle className="mt-4 text-2xl font-bold tracking-tight text-primary">
           Create Solar Unit
@@ -242,6 +250,7 @@ export function CreateSolarUnitForm() {
                         <Input
                           className="h-11"
                           type="datetime-local"
+                          max={new Date().toISOString().slice(0, 16)}
                           {...field}
                         />
                       </FormControl>

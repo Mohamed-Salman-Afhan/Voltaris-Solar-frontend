@@ -31,7 +31,7 @@ export default function PaymentCompletePage() {
     <div className="container mx-auto p-8 max-w-md">
       <Card className="text-center">
         <CardHeader>
-          <div className="flex justify-center mb-4">
+          <div className="mt-2 flex justify-center mb-4">
             {isSuccess ? (
               <CheckCircle2 className="w-16 h-16 text-green-500" />
             ) : (
@@ -61,7 +61,7 @@ export default function PaymentCompletePage() {
             </p>
           )}
 
-          <Button asChild className="w-full">
+          <Button asChild className="mb-3 w-full">
             <Link to="/dashboard/invoices">Return to Invoices</Link>
           </Button>
         </CardContent>

@@ -24,10 +24,13 @@ import { DollarSign, Clock, AlertCircle } from "lucide-react";
 export function AdminInvoicesPage() {
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [daysFilter, setDaysFilter] = useState("30");
+  const [page, setPage] = useState(1);
 
   // Construct query params
   const queryParams = {
     days: daysFilter,
+    page,
+    limit: 15,
     ...(statusFilter !== "ALL" && { status: statusFilter }),
   };
 
@@ -216,13 +219,47 @@ export function AdminInvoicesPage() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    {format(new Date(invoice.createdAt), "PPP")}
+                    <div className="flex flex-col">
+                      <span>
+                        {invoice.paymentStatus === "PAID" && invoice.paidAt
+                          ? format(new Date(invoice.paidAt), "MMM d, yyyy")
+                          : format(new Date(invoice.createdAt), "MMM d, yyyy")}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground">
+                        {invoice.paymentStatus === "PAID"
+                          ? "Paid On"
+                          : "Created"}
+                      </span>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))
             )}
           </TableBody>
         </Table>
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-between mt-4">
+        <span className="text-sm text-muted-foreground">
+          Page {data?.page || 1} of {data?.totalPages || 1}
+        </span>
+        <div className="flex gap-2">
+          <button
+            className="px-3 py-1 text-sm border rounded hover:bg-gray-100 disabled:opacity-50"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={!data || data.page <= 1}
+          >
+            Previous
+          </button>
+          <button
+            className="px-3 py-1 text-sm border rounded hover:bg-gray-100 disabled:opacity-50"
+            onClick={() => setPage((p) => p + 1)}
+            disabled={!data || data.page >= data.totalPages}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

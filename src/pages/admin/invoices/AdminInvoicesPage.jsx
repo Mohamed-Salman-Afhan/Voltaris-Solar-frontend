@@ -172,9 +172,7 @@ export function AdminInvoicesPage() {
             ) : (
               invoices.map((invoice) => (
                 <TableRow key={invoice._id}>
-                  <TableCell className="font-medium">
-                    {invoice._id.substring(0, 8)}...
-                  </TableCell>
+                  <TableCell className="font-medium">{invoice._id}</TableCell>
                   <TableCell>
                     <div className="flex flex-col">
                       <span>

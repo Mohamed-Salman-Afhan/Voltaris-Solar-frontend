@@ -95,8 +95,8 @@ export const api = createApi({
       invalidatesTags: ["Anomalies"],
     }),
     getAdminAnomalies: build.query({
-      query: (params) => {
-        const qs = new URLSearchParams(params).toString();
+      query: ({ page = 1, limit = 10, ...params }) => {
+        const qs = new URLSearchParams({ ...params, page, limit }).toString();
         return `/anomalies/admin?${qs}`;
       },
       providesTags: ["Anomalies"],

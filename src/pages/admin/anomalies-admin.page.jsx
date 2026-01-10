@@ -24,12 +24,15 @@ const AdminAnomaliesPage = () => {
   const [filterSeverity, setFilterSeverity] = useState("ALL");
   const [filterStatus, setFilterStatus] = useState("ALL");
 
-  const queryParams = {};
+  const [page, setPage] = useState(1);
+
+  const queryParams = { page, limit: 10 };
   if (filterSeverity !== "ALL") queryParams.severity = filterSeverity;
   if (filterStatus !== "ALL") queryParams.status = filterStatus;
 
   const { data: response, isLoading } = useGetAdminAnomaliesQuery(queryParams);
   const anomalies = response?.data || [];
+  const meta = response?.meta || { totalPages: 1, currentPage: 1 };
 
   const getSeverityColor = (severity) => {
     switch (severity) {
@@ -55,12 +58,19 @@ const AdminAnomaliesPage = () => {
     }
   };
 
+  const handleFilterChange = (setter) => (value) => {
+    setter(value);
+    setPage(1); // Reset to page 1 on filter change
+  };
+
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       {/* Page Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">System Anomalies</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            System Anomalies
+          </h1>
           <p className="text-muted-foreground">
             Monitor and manage anomalies across all solar units.
           </p>
@@ -70,7 +80,10 @@ const AdminAnomaliesPage = () => {
       {/* Filters */}
       <Card className="shadow-sm">
         <CardContent className="flex gap-4 p-4">
-          <Select value={filterSeverity} onValueChange={setFilterSeverity}>
+          <Select
+            value={filterSeverity}
+            onValueChange={handleFilterChange(setFilterSeverity)}
+          >
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Filter by Severity" />
             </SelectTrigger>
@@ -82,7 +95,10 @@ const AdminAnomaliesPage = () => {
             </SelectContent>
           </Select>
 
-          <Select value={filterStatus} onValueChange={setFilterStatus}>
+          <Select
+            value={filterStatus}
+            onValueChange={handleFilterChange(setFilterStatus)}
+          >
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Filter by Status" />
             </SelectTrigger>
@@ -111,72 +127,97 @@ const AdminAnomaliesPage = () => {
               <span>Loading anomalies...</span>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/50">
-                  <TableHead>Date</TableHead>
-                  <TableHead>Unit ID</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Severity</TableHead>
-                  <TableHead>Metrics</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {anomalies.length === 0 ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={6}
-                      className="text-center h-24 text-muted-foreground"
-                    >
-                      No anomalies found matching criteria.
-                    </TableCell>
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/50">
+                    <TableHead>Date</TableHead>
+                    <TableHead>Unit ID</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Severity</TableHead>
+                    <TableHead>Metrics</TableHead>
+                    <TableHead>Status</TableHead>
                   </TableRow>
-                ) : (
-                  anomalies.map((anomaly, idx) => (
-                    <TableRow
-                      key={anomaly._id}
-                      className={
-                        idx % 2 === 0
-                          ? "bg-background hover:bg-muted/40"
-                          : "bg-muted/20 hover:bg-muted/40"
-                      }
-                    >
-                      <TableCell className="font-medium whitespace-nowrap">
-                        {format(new Date(anomaly.detectionTimestamp), "PP p")}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs whitespace-nowrap">
-                        {anomaly.solarUnitId?.serialNumber ||
-                          anomaly.solarUnitId ||
-                          "N/A"}
-                      </TableCell>
-                      <TableCell className="capitalize whitespace-nowrap">
-                        {anomaly.anomalyType.replace(/_/g, " ")}
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={getSeverityColor(anomaly.severity)}
-                          className="uppercase"
-                        >
-                          {anomaly.severity}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-sm whitespace-nowrap">
-                        <span className="text-muted-foreground">Exp:</span>{" "}
-                        {anomaly.metrics.expectedValue} |{" "}
-                        <span className="text-muted-foreground">Act:</span>{" "}
-                        {anomaly.metrics.actualValue}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="uppercase">
-                          {anomaly.status}
-                        </Badge>
+                </TableHeader>
+                <TableBody>
+                  {anomalies.length === 0 ? (
+                    <TableRow>
+                      <TableCell
+                        colSpan={6}
+                        className="text-center h-24 text-muted-foreground"
+                      >
+                        No anomalies found matching criteria.
                       </TableCell>
                     </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
+                  ) : (
+                    anomalies.map((anomaly, idx) => (
+                      <TableRow
+                        key={anomaly._id}
+                        className={
+                          idx % 2 === 0
+                            ? "bg-background hover:bg-muted/40"
+                            : "bg-muted/20 hover:bg-muted/40"
+                        }
+                      >
+                        <TableCell className="font-medium whitespace-nowrap">
+                          {format(new Date(anomaly.detectionTimestamp), "PP p")}
+                        </TableCell>
+                        <TableCell className="font-mono text-xs whitespace-nowrap">
+                          {anomaly.solarUnitId?.serialNumber ||
+                            anomaly.solarUnitId ||
+                            "N/A"}
+                        </TableCell>
+                        <TableCell className="capitalize whitespace-nowrap">
+                          {anomaly.anomalyType.replace(/_/g, " ")}
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={getSeverityColor(anomaly.severity)}
+                            className="uppercase"
+                          >
+                            {anomaly.severity}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-sm whitespace-nowrap">
+                          <span className="text-muted-foreground">Exp:</span>{" "}
+                          {anomaly.metrics.expectedValue} |{" "}
+                          <span className="text-muted-foreground">Act:</span>{" "}
+                          {anomaly.metrics.actualValue}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className="uppercase">
+                            {anomaly.status}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+
+              {/* Pagination Controls */}
+              <div className="flex items-center justify-between mt-4">
+                <span className="text-sm text-muted-foreground">
+                  Page {meta.currentPage} of {meta.totalPages}
+                </span>
+                <div className="flex gap-2">
+                  <button
+                    className="px-3 py-1 text-sm border rounded hover:bg-gray-100 disabled:opacity-50"
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={meta.currentPage <= 1}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    className="px-3 py-1 text-sm border rounded hover:bg-gray-100 disabled:opacity-50"
+                    onClick={() => setPage((p) => p + 1)}
+                    disabled={meta.currentPage >= meta.totalPages}
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            </>
           )}
         </CardContent>
       </Card>

@@ -94,7 +94,7 @@ const AnalyticsPage = () => {
             operational health.
           </p>
           {activeSolarUnit && (
-            <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mt-1">
+            <p className="text-sm text-secondary dark:text-primary-foreground font-medium mt-1">
               {activeSolarUnit.city}, {activeSolarUnit.country}
             </p>
           )}

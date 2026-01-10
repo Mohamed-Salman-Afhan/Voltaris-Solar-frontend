@@ -7,16 +7,29 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 export function SolarUnitsTab() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("ALL");
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
   const {
-    data: solarUnits,
+    data,
     isLoading: isLoadingSolarUnits,
     isError: isErrorSolarUnits,
     error: errorSolarUnits,
-  } = useGetSolarUnitsQuery();
+  } = useGetSolarUnitsQuery({ page, limit: 9, status: statusFilter });
+
+  const solarUnits = data?.units || [];
+  const totalPages = data?.totalPages || 1;
 
   if (isLoadingSolarUnits) {
     return <div>Loading...</div>;
@@ -25,8 +38,6 @@ export function SolarUnitsTab() {
   if (isErrorSolarUnits) {
     return <div>Error: {errorSolarUnits.message}</div>;
   }
-
-  console.log(solarUnits);
 
   const filteredUnits =
     searchTerm !== ""
@@ -43,12 +54,33 @@ export function SolarUnitsTab() {
         </Button>
       </div>
 
-      <div className="w-full max-w-md">
-        <Input
-          placeholder="Search solar units..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      <div className="flex gap-4 items-center">
+        <div className="w-full max-w-md flex-1">
+          <Input
+            placeholder="Search solar units..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <div className="w-[180px]">
+          <Select
+            value={statusFilter}
+            onValueChange={(val) => {
+              setStatusFilter(val);
+              setPage(1);
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ALL">All Statuses</SelectItem>
+              <SelectItem value="ACTIVE">Active</SelectItem>
+              <SelectItem value="INACTIVE">Inactive</SelectItem>
+              <SelectItem value="MAINTENANCE">Maintenance</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -118,6 +150,29 @@ export function SolarUnitsTab() {
           </p>
         </Card>
       )}
+
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-between mt-4">
+        <span className="text-sm text-muted-foreground">
+          Page {page} of {totalPages}
+        </span>
+        <div className="flex gap-2">
+          <button
+            className="px-3 py-1 text-sm border rounded hover:bg-gray-100 disabled:opacity-50"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page <= 1}
+          >
+            Previous
+          </button>
+          <button
+            className="px-3 py-1 text-sm border rounded hover:bg-gray-100 disabled:opacity-50"
+            onClick={() => setPage((p) => p + 1)}
+            disabled={page >= totalPages}
+          >
+            Next
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

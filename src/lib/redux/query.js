@@ -30,7 +30,8 @@ export const api = createApi({
       query: () => `/solar-units/me`,
     }),
     getSolarUnits: build.query({
-      query: () => `/solar-units`,
+      query: ({ page = 1, limit = 10 } = {}) =>
+        `/solar-units?page=${page}&limit=${limit}`,
       providesTags: ["SolarUnits"],
     }),
     getSolarUnitById: build.query({

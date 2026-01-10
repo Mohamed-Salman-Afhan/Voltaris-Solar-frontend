@@ -49,7 +49,15 @@ const DashboardPage = () => {
         </main>
       );
     }
-    return <div>Error: {errorSolarUnit.message || "An error occurred"}</div>;
+    return (
+      <div className="p-4 bg-red-50 text-red-600 rounded-md border border-red-200">
+        <h3 className="font-bold text-lg mb-2">Error Loading Solar Unit</h3>
+        <p className="mb-2">Status: {errorSolarUnit.status}</p>
+        <pre className="text-xs font-mono bg-white p-2 rounded overflow-auto max-h-[300px]">
+          {JSON.stringify(errorSolarUnit, null, 2)}
+        </pre>
+      </div>
+    );
   }
 
   // Fallback if no units found

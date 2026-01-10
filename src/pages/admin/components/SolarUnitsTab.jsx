@@ -145,9 +145,26 @@ export function SolarUnitsTab() {
 
       {filteredUnits.length === 0 && (
         <Card className="p-12 text-center">
-          <p className="text-muted-foreground">
-            No solar units found matching "{searchTerm}"
-          </p>
+          <div className="flex flex-col items-center justify-center space-y-2">
+            <p className="text-muted-foreground">
+              {statusFilter !== "ALL"
+                ? `No ${statusFilter.toLowerCase()} solar units found`
+                : "No solar units found"}
+              {searchTerm && ` matching "${searchTerm}"`}
+            </p>
+            {(searchTerm || statusFilter !== "ALL") && (
+              <Button
+                variant="link"
+                onClick={() => {
+                  setSearchTerm("");
+                  setStatusFilter("ALL");
+                  setPage(1);
+                }}
+              >
+                Clear all filters
+              </Button>
+            )}
+          </div>
         </Card>
       )}
 

@@ -15,8 +15,11 @@ export default function CheckoutForm({ invoiceId }) {
   const fetchClientSecret = useCallback(async () => {
     try {
       const token = await getToken();
+      const baseUrl = import.meta.env.VITE_BACKEND_URL
+        ? `${import.meta.env.VITE_BACKEND_URL}/api`
+        : "http://localhost:8000/api";
       const response = await fetch(
-        "http://localhost:8000/api/payments/create-checkout-session",
+        `${baseUrl}/payments/create-checkout-session`,
         {
           method: "POST",
           headers: {

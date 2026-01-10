@@ -23,7 +23,7 @@ const DashboardPage = () => {
     isLoading: isLoadingSolarUnit,
     isError: isErrorSolarUnit,
     error: errorSolarUnit,
-  } = useGetSolarUnitForUserQuery();
+  } = useGetSolarUnitForUserQuery(undefined, { skip: !isLoaded || !user });
 
   // Effect to select the first unit by default when data loads
   useEffect(() => {

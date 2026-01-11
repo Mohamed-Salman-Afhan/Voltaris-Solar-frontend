@@ -119,7 +119,7 @@ const DashboardPage = () => {
       </div>
 
       {/* Row 3: System Health */}
-      <div className="h-auto lg:min-h-[300px] mt-8">
+      <div className="h-auto lg:min-h-[300px] mt-16">
         <DashboardAnomalies solarUnitId={selectedUnit._id} />
       </div>
     </main>

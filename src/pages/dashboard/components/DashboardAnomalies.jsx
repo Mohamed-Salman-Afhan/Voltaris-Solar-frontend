@@ -19,7 +19,7 @@ const DashboardAnomalies = ({ solarUnitId }) => {
   } = useGetAnomaliesQuery(
     {
       unitId: solarUnitId,
-      status: "OPEN",
+      status: "NEW", // Changed from OPEN to NEW to match backend
     },
     {
       skip: !solarUnitId,
@@ -116,10 +116,13 @@ const DashboardAnomalies = ({ solarUnitId }) => {
                 >
                   <div className="flex justify-between items-start gap-2">
                     <span className="font-semibold text-sm line-clamp-1">
-                      {anomaly.type || "Unknown Issue"}
+                      {anomaly.anomalyType || "Unknown Issue"}
                     </span>
                     <span className="text-xs text-muted-foreground shrink-0 tabular-nums">
-                      {format(new Date(anomaly.timestamp), "MMM d, HH:mm")}
+                      {format(
+                        new Date(anomaly.detectionTimestamp),
+                        "MMM d, HH:mm"
+                      )}
                     </span>
                   </div>
                   <p className="text-xs text-muted-foreground line-clamp-2">

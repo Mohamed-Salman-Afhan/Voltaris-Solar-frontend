@@ -36,27 +36,31 @@ const ImpactBadge = ({ level }) => {
 
 const WeatherMetric = ({ icon: Icon, label, value, unit, large }) => (
   <div
-    className={`flex items-center space-x-4 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl transition-all hover:bg-white/15 ${
-      large ? "p-6" : "p-4"
+    className={`flex items-center space-x-2 sm:space-x-4 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl transition-all hover:bg-white/15 ${
+      large ? "p-4 sm:p-6" : "p-3 sm:p-4"
     }`}
   >
     <div
       className={`rounded-xl flex items-center justify-center text-white bg-white/20 ${
-        large ? "p-3" : "p-2"
+        large ? "p-2 sm:p-3" : "p-1.5 sm:p-2"
       }`}
     >
-      <Icon className={large ? "w-8 h-8" : "w-5 h-5"} />
+      <Icon
+        className={large ? "w-6 h-6 sm:w-8 sm:h-8" : "w-4 h-4 sm:w-5 sm:h-5"}
+      />
     </div>
-    <div>
+    <div className="min-w-0">
       <p
-        className={`font-bold text-white tracking-tight ${
-          large ? "text-3xl" : "text-xl"
+        className={`font-bold text-white tracking-tight truncate ${
+          large ? "text-xl sm:text-3xl" : "text-base sm:text-xl"
         }`}
       >
         {value}{" "}
-        <span className="text-base font-medium text-white/70">{unit}</span>
+        <span className="text-sm sm:text-base font-medium text-white/70">
+          {unit}
+        </span>
       </p>
-      <p className="text-xs text-white/60 font-medium uppercase tracking-wider mt-0.5">
+      <p className="text-[10px] sm:text-xs text-white/60 font-medium uppercase tracking-wider mt-0.5 truncate">
         {label}
       </p>
     </div>
@@ -115,15 +119,15 @@ const WeatherWidget = ({ solarUnitId }) => {
       {/* Dark overlay for readability */}
       <div className="absolute inset-0 bg-black/40" />
 
-      <div className="relative p-6 space-y-6">
+      <div className="relative p-4 sm:p-6 space-y-4 sm:space-y-6 h-full flex flex-col">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-semibold text-white tracking-tight">
+          <h3 className="text-lg sm:text-xl font-semibold text-white tracking-tight">
             Weather Conditions
           </h3>
           <ImpactBadge level={impact_level} />
         </div>
 
-        <div className="grid grid-cols-2 gap-4 flex-1 content-center">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 flex-1 content-center">
           <WeatherMetric
             icon={Thermometer}
             label="Temperature"
@@ -152,7 +156,7 @@ const WeatherWidget = ({ solarUnitId }) => {
           />
         </div>
         <div className="flex justify-between mt-2 items-center px-1">
-          <span className="text-[10px] text-white/60 font-medium">
+          <span className="text-[10px] text-white/60 font-medium truncate max-w-[150px]">
             {[city, country].filter(Boolean).join(", ")}
           </span>
           <span className="text-[10px] text-white/60">

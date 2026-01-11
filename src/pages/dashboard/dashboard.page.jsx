@@ -99,7 +99,7 @@ const DashboardPage = () => {
       </div>
 
       {/* Row 1: Weather and Real-Time Power */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-auto lg:h-[400px]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-auto lg:min-h-[400px]">
         <div className="h-[400px] lg:h-full">
           <WeatherWidget solarUnitId={selectedUnit._id} />
         </div>
@@ -109,7 +109,7 @@ const DashboardPage = () => {
       </div>
 
       {/* Row 2: Capacity Factor and Data Chart */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-auto lg:h-[400px]">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-auto lg:min-h-[400px]">
         <div className="lg:col-span-1 h-[400px] lg:h-full">
           <CapacityFactorChart solarUnitId={selectedUnit._id} />
         </div>
@@ -119,7 +119,7 @@ const DashboardPage = () => {
       </div>
 
       {/* Row 3: System Health */}
-      <div className="h-auto lg:h-[300px]">
+      <div className="h-auto lg:min-h-[300px] mt-8">
         <DashboardAnomalies solarUnitId={selectedUnit._id} />
       </div>
     </main>
